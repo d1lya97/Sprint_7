@@ -17,16 +17,17 @@ public class Order {
     public Order() {
     }
 
-    public Order(String firstName,
-                 String lastName,
-                 String address,
-                 String metroStation,
-                 String phone,
-                 int rentTime,
-                 String deliveryDate,
-                 String comment,
-                 List<String> color) {
-
+    public Order(
+            String firstName,
+            String lastName,
+            String address,
+            String metroStation,
+            String phone,
+            int rentTime,
+            String deliveryDate,
+            String comment,
+            List<String> color
+    ) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -109,5 +110,4 @@ public class Order {
     public void setColor(List<String> color) {
         this.color = color;
     }
-
 }

@@ -1,10 +1,11 @@
 package com.example;
 
 import com.example.clients.OrderClient;
-import io.qameta.allure.Step;
+import io.qameta.allure.Description;
 import io.restassured.response.Response;
 import org.junit.Test;
 
+import static org.apache.http.HttpStatus.SC_OK;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
@@ -12,28 +13,20 @@ import static org.hamcrest.Matchers.not;
 public class OrderListTest {
 
     @Test
-    @Step("Получение списка заказов")
+    @Description("Проверка получения списка заказов")
     public void testGetOrdersList() {
 
-        OrderClient orderClient = new OrderClient();
+        OrderClient orderClient =
+                new OrderClient();
 
-        Response response = orderClient.getOrders();
-
-        int statusCode = response.statusCode();
-
-        System.out.println(
-                "Получение списка заказов. Статус: "
-                        + statusCode
-        );
-
-        System.out.println(
-                "Ответ сервера: "
-                        + response.asString()
-        );
+        Response response =
+                orderClient.getOrders();
 
         response.then()
-                .statusCode(200)
-                .body("orders", is(not(empty())));
+                .statusCode(SC_OK)
+                .body(
+                        "orders",
+                        is(not(empty()))
+                );
     }
 }
-

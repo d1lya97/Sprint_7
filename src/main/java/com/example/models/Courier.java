@@ -2,7 +2,6 @@ package com.example.models;
 
 public class Courier {
 
-
     private String login;
     private String password;
     private String firstName;
@@ -39,5 +38,4 @@ public class Courier {
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
-
 }

@@ -3,8 +3,9 @@ package com.example;
 import com.example.clients.OrderClient;
 import com.example.generators.DataGenerator;
 import com.example.models.Order;
-import io.qameta.allure.Step;
+import io.qameta.allure.Description;
 import io.restassured.response.Response;
+import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -12,6 +13,7 @@ import org.junit.runners.Parameterized;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.apache.http.HttpStatus.SC_CREATED;
 import static org.hamcrest.Matchers.notNullValue;
 
 @RunWith(Parameterized.class)
@@ -19,6 +21,10 @@ public class OrderCreateTest {
 
     private final List<String> colors;
     private final String testDescription;
+
+    private final OrderClient orderClient = new OrderClient();
+
+    private Integer track;
 
     public OrderCreateTest(
             List<String> colors,
@@ -52,10 +58,8 @@ public class OrderCreateTest {
     }
 
     @Test
-    @Step("Создание заказа: {1}")
+    @Description("Проверка успешного создания заказа с разными вариантами цвета")
     public void testCreateOrderWithColors() {
-
-        OrderClient orderClient = new OrderClient();
 
         Order order =
                 DataGenerator.generateOrderWithColors(colors);
@@ -63,15 +67,21 @@ public class OrderCreateTest {
         Response response =
                 orderClient.createOrder(order);
 
-        System.out.println(
-                "Тест: "
-                        + testDescription
-                        + ". Статус: "
-                        + response.statusCode()
-        );
-
         response.then()
-                .statusCode(201)
+                .statusCode(SC_CREATED)
                 .body("track", notNullValue());
+
+        track = response
+                .then()
+                .extract()
+                .path("track");
+    }
+
+    @After
+    public void tearDown() {
+
+        if (track != null) {
+            orderClient.cancelOrder(String.valueOf(track));
+        }
     }
 }
