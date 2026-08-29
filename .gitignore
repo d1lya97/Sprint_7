@@ -1,7 +1,10 @@
 ### Maven ###
 target/
-.mvn/
 !.mvn/wrapper/maven-wrapper.jar
+!target/allure-results/
+
+### Allure ###
+.allure/
 
 ### IntelliJ IDEA ###
 .idea/
@@ -35,6 +38,14 @@ build/
 
 ### Mac OS ###
 .DS_Store
+Thumbs.db
 
 ### Logs ###
 *.log
+*.tmp
+*.swp
+*.lock
+
+### Test results ###
+surefire-reports/
+failsafe-reports/
